@@ -32,6 +32,7 @@
 //
 // -- the hash table itself --
 char hash_table[HASH_TABLE_SIZE_M][MAX_KEY_LENGTH];
+int filled_cells
 
 //
 // -- example hash function skeleton --
@@ -52,6 +53,7 @@ int hash_function(const char *key, int table_size ) {
         //check if index is filled
         if(hash_table[index][0] == '-'){
             found = 1;
+            filled_cells++;
         }
         else if(strcasecmp(hash_table[index], key)==0){
             found = 2;
