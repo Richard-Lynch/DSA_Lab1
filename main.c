@@ -37,27 +37,52 @@ char hash_table[HASH_TABLE_SIZE_M][MAX_KEY_LENGTH];
 // -- example hash function skeleton --
 // if it finds the key in the table it should return that index
 // otherwise return the appropriate empty index or -1 if table is full
-int hash_function( const char *key, int table_size ) {
+int hash_function(const char *key, int table_size ) {
 	int index = 0;
     int probes = 0;
 
-	// write your hash function here
-
+	//simple hash function
     for(int j=0; j<MAX_KEY_LENGTH; j++){
         index += key[j];
-
     }
-
     index = index % table_size;
-
-	//
-	// consider counting the number of probes it takes to store
-	// your key and printing that out
-
+    
+    int found = 0;
+    int index_1 = index;
+    while(found == 0){
+        //check if index is filled
+        if(hash_table[index][1] == *key){
+            found = 1;
+        }
+        else if(hash_table[index][1] == '-'){
+            found = 1;
+        }
+        else if(probes >= table_size){
+            index = -1;
+            found = 1;
+        }
+        else{
+            if(index < table_size){
+                index++;
+            }
+            else{
+                index = 0;
+            }
+            probes++;
+        }   
+    }
+    printf("%i probes", probes);
+    if(index != -1){
+        strcpy(hash_table[index], key);
+        printf("adding worked!");
+    }
 	return index;
 }
 
 int main() {
+    //empty hash table
+    memset(hash_table,'-', sizeof(char)*HASH_TABLE_SIZE_M*MAX_KEY_LENGTH);
+
 
 	//
 	// example: array of test strings to use as keys
