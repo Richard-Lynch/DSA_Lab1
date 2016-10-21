@@ -48,14 +48,13 @@ int hash_function(const char *key, int table_size ) {
     index = index % table_size;
     
     int found = 0;
-    int index_1 = index;
     while(found == 0){
         //check if index is filled
-        if(hash_table[index][1] == *key){
+        if(hash_table[index][0] == '-'){
             found = 1;
         }
-        else if(hash_table[index][1] == '-'){
-            found = 1;
+        else if(strcasecmp(hash_table[index], key)==0){
+            found = 2;
         }
         else if(probes >= table_size){
             index = -1;
@@ -63,6 +62,7 @@ int hash_function(const char *key, int table_size ) {
         }
         else{
             int hash_type = 2;
+            //first hash - plus one
             if(hash_type == 1)
             {
                 if(index < table_size){
@@ -71,10 +71,9 @@ int hash_function(const char *key, int table_size ) {
                 else{
                     index = 0;
                 }
-            }
+            }//second hash
             else if(hash_type == 2)
             {
-                //second hash_function
                 for(int j=0; j<MAX_KEY_LENGTH; j++){
                     index += key[j]*j;
                 }
