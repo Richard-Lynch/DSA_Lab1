@@ -62,11 +62,23 @@ int hash_function(const char *key, int table_size ) {
             found = 1;
         }
         else{
-            if(index < table_size){
-                index++;
+            int hash_type = 2;
+            if(hash_type == 1)
+            {
+                if(index < table_size){
+                    index++;
+                }
+                else{
+                    index = 0;
+                }
             }
-            else{
-                index = 0;
+            else if(hash_type == 2)
+            {
+                //second hash_function
+                for(int j=0; j<MAX_KEY_LENGTH; j++){
+                    index += key[j]*j;
+                }
+                index = (index+probes) % table_size;
             }
             probes++;
         }   
@@ -81,6 +93,7 @@ int hash_function(const char *key, int table_size ) {
 int main() {
     //empty hash table
     memset(hash_table,'-', sizeof(char)*HASH_TABLE_SIZE_M*MAX_KEY_LENGTH);
+    //eo empty
 
 
 	//
@@ -103,10 +116,21 @@ int main() {
 		// the %16s means print a string (%s) but pad it to 16 spaces
 		printf( "%16s %6i\n", test_strings[i], index );
 	}
+    //eo print
 
-	//
 	// calculate table load here
-	//
+    double table_load = 0;
+    for(int i = 0; i<HASH_TABLE_SIZE_M; i++)
+    {
+        if(hash_table[i][1] != '-')
+        {
+            table_load += 1;
+        }
+    }
+    table_load = table_load/HASH_TABLE_SIZE_M;
+
+    printf("Table load is %f \n", table_load);
+	// eo table load
 
 	return 0;
 }
