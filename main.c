@@ -25,7 +25,7 @@
 
 //
 // i #define array lengths so i only have to change them in one place
-#define NUM_TEST_KEYS 7
+#define NUM_TEST_KEYS 8
 #define MAX_KEY_LENGTH 16
 #define HASH_TABLE_SIZE_M 17
 
@@ -42,9 +42,10 @@ int hash_function( const char *key, int table_size ) {
     int probes = 0;
 
 	// write your hash function here
-    while(*key != NULL)
-    {
-        index += int(*key);
+
+    for(int j=0; j<MAX_KEY_LENGTH; j++){
+        index += key[j];
+
     }
 
     index = index % table_size;
@@ -61,7 +62,7 @@ int main() {
 	//
 	// example: array of test strings to use as keys
 	char test_strings[NUM_TEST_KEYS][MAX_KEY_LENGTH] = {
-		"prince adam", "orko", "cringer", "teela", "aleet", "princess adora", "orko"
+		"prince adam", "orko", "cringer", "teela", "aleet", "princess adora", "orko", "a"
 	};
 
 	//
