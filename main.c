@@ -25,7 +25,7 @@
 
 //
 // i #define array lengths so i only have to change them in one place
-#define NUM_TEST_KEYS 8
+#define NUM_TEST_KEYS 9
 #define MAX_KEY_LENGTH 16
 #define HASH_TABLE_SIZE_M 17
 
@@ -74,7 +74,6 @@ int hash_function(const char *key, int table_size ) {
     printf("%i probes", probes);
     if(index != -1){
         strcpy(hash_table[index], key);
-        printf("adding worked!");
     }
 	return index;
 }
@@ -87,7 +86,7 @@ int main() {
 	//
 	// example: array of test strings to use as keys
 	char test_strings[NUM_TEST_KEYS][MAX_KEY_LENGTH] = {
-		"prince adam", "orko", "cringer", "teela", "aleet", "princess adora", "orko", "a"
+		"prince adam", "orko", "cringer", "teela", "aleet", "alete", "princess adora", "orko", "a"
 	};
 
 	//
