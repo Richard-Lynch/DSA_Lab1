@@ -39,10 +39,15 @@ char hash_table[HASH_TABLE_SIZE_M][MAX_KEY_LENGTH];
 // otherwise return the appropriate empty index or -1 if table is full
 int hash_function( const char *key, int table_size ) {
 	int index = 0;
+    int probes = 0;
 
-	//
 	// write your hash function here
-	//
+    while(*key != NULL)
+    {
+        index += int(*key);
+    }
+
+    index = index % table_size;
 
 	//
 	// consider counting the number of probes it takes to store
