@@ -23,6 +23,8 @@
 #include <stdio.h> // printf() etc.
 #include <string.h> // strcpy(), strlen() etc.
 #include <math.h>
+#include <iostream>
+#include <fstream>
 
 //
 // i #define array lengths so i only have to change them in one place
@@ -114,6 +116,10 @@ int main() {
 	char test_strings[NUM_TEST_KEYS][MAX_KEY_LENGTH] = {
 		"prince adam", "orko", "cringer", "teela", "aleet", "alete", "princess adora", "orko", "a", "aleet"
 	};
+
+    char test_strings2[NUM_TEST_KEYS][MAX_KEY_LENGTH];
+
+
 
 	//
 	// -Example: store each key in the table and print the index for each test key-
