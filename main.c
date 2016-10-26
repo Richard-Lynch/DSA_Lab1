@@ -168,6 +168,7 @@ int main()
     string names = "ASSurnames.txt";
     names = "Given_Names.txt";
     names = "Names.txt";
+    names = "Names/Names.txt";
     readFile(names);
     //-eo test data-
     //
