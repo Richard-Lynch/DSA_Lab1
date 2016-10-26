@@ -30,7 +30,7 @@ using namespace std;
 //
 // i #define array lengths so i only have to change them in one place
 #define MAX_KEY_LENGTH 16       //Max Length of a Key
-#define HASH_TABLE_SIZE_M 30047 //Size of the hash table
+#define HASH_TABLE_SIZE_M 25037 //Size of the hash table
 #define hash_type 2             // hash type 1 = linear, hash type 2 = double hashing
 //
 
@@ -152,6 +152,13 @@ int hash_function(const char *key, int table_size)
 
 int main()
 {
+    std::clock_t start;
+    double duration;
+
+    start = std::clock();
+
+
+
     //
     // -Empty Hash Table-
     for (int i = 0; i < HASH_TABLE_SIZE_M; i++)
@@ -225,6 +232,10 @@ int main()
             *Out << i << ", " << filled[i] << ", " << &hash_table[i][0] << endl;
         }
     }
+
+    duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
+
+    printf("\nTotal Duration: %f\n", duration);
 
     return 0;
 }
