@@ -22,116 +22,126 @@
 
 #include <stdio.h> // printf() etc.
 #include <string.h> // strcpy(), strlen() etc.
+#include <math.h>
 
 //
 // i #define array lengths so i only have to change them in one place
-#define NUM_TEST_KEYS 9
-#define MAX_KEY_LENGTH 16
-#define HASH_TABLE_SIZE_M 17
+#define NUM_TEST_KEYS 10 //Number of test keys to be entered
+#define MAX_KEY_LENGTH 16 //Max Length of a Key
+#define HASH_TABLE_SIZE_M 17 //Size of the hash table
+#define hash_type 2 // hash type 1 = linear, hash type 2 = double hashing
 
-//
 // -- the hash table itself --
 char hash_table[HASH_TABLE_SIZE_M][MAX_KEY_LENGTH];
-int filled_cells
+double filled_cells;//counter for number of cells filled, to calculate load
 
-//
-// -- example hash function skeleton --
+// -- Hash Function -- 
 // if it finds the key in the table it should return that index
-// otherwise return the appropriate empty index or -1 if table is full
+// otherwise return the appropriate empty index(and add to the table) or -1 if table is full
 int hash_function(const char *key, int table_size ) {
-	int index = 0;
-    int probes = 0;
+	int index = 0;//the index which will be returned
+    int probes = 0;//the number of probes required to find 
 
-	//simple hash function
+	//-simple hash function-
+        //index = sum of each ascii value of the key put to the power of its position in the key 
     for(int j=0; j<MAX_KEY_LENGTH; j++){
-        index += key[j];
+        index += pow(key[j], j);
+        //index += key[j]; an extremly simple hash which just sums the ascii values of the key
     }
-    index = index % table_size;
-    
-    int found = 0;
+    index = index % table_size;//index is index mod table size to make sure it fits in the table 
+    //-eo simple-
+    //
+
+    //
+    //-search hash table-
+    int found = 0;//flag - have we found the corrected index
     while(found == 0){
-        //check if index is filled
+        //check if index being checked is empty
         if(hash_table[index][0] == '-'){
-            found = 1;
-            filled_cells++;
+            found = 1;//if the index being checked is empty set found flag to 1
+            filled_cells++;//add one to the number of filled cells(this is the first time we've added this key)
         }
         else if(strcasecmp(hash_table[index], key)==0){
-            found = 2;
+            found = 2;//if the index being checked containts the key, set found flag to 1
+            //we have found the key in the table, we dont need to add 1 to filled 
         }
         else if(probes >= table_size){
-            index = -1;
-            found = 1;
+            index = -1;//if we have probed every cell and found no space, set index to -1 to show the table is full
+            found = 3;//set found flag to 3 to exit loop
         }
         else{
-            int hash_type = 2;
-            //first hash - plus one
+            //either of these hashing types can be enabled at the top of the program by setting hash_type
+            //first hash type - linear probing
             if(hash_type == 1)
             {
-                if(index < table_size){
-                    index++;
-                }
-                else{
-                    index = 0;
-                }
-            }//second hash
+                index = (index + 1) % table_size; //increment by 1 and go to 0 if greater than table size
+
+            }//second hash type - double hashing
             else if(hash_type == 2)
             {
-                for(int j=0; j<MAX_KEY_LENGTH; j++){
-                    index += key[j]*j;
-                }
-                index = (index+probes) % table_size;
+                //increment the index by the first char in the key mod table_size(+1 to ensure it is never 0)
+                //aka the increment is (key[0]%table_size) +1
+                index = (index + (key[0] % table_size) + 1) % table_size;
             }
-            probes++;
+            probes++;//if we have incremenented the index add one to probe
         }   
     }
+    //-eo search-
+    //
+
+    //-print the number of probes we needed to find the index-
     printf("%i probes", probes);
+
+    //-if the table wasnt full(we found an available index) copy the key to the table-
     if(index != -1){
         strcpy(hash_table[index], key);
     }
+
 	return index;
 }
 
 int main() {
-    //empty hash table
+    //
+    // -Empty Hash Table-
     memset(hash_table,'-', sizeof(char)*HASH_TABLE_SIZE_M*MAX_KEY_LENGTH);
-    //eo empty
+    filled_cells = 0;
+    // -eo empty-
+    //
 
 
 	//
-	// example: array of test strings to use as keys
+	// -Example: array of test strings to use as keys- 
 	char test_strings[NUM_TEST_KEYS][MAX_KEY_LENGTH] = {
-		"prince adam", "orko", "cringer", "teela", "aleet", "alete", "princess adora", "orko", "a"
+		"prince adam", "orko", "cringer", "teela", "aleet", "alete", "princess adora", "orko", "a", "aleet"
 	};
 
 	//
-	// example: store each key in the table and print the index for each test key
+	// -Example: store each key in the table and print the index for each test key-
 	printf(
-		"             key      table index\n-----------------------------------\n" );
+		"\n             key      table index\n-----------------------------------\n" );
 	for ( int i = 0; i < NUM_TEST_KEYS; i++ ) {
-		int index = hash_function( test_strings[i], HASH_TABLE_SIZE_M );
-		
-		//
-		// i would check for errors and store the keys in the table here
-		//
-
+        //pass each of the test strings to the hash function to find index
+		int index = hash_function(test_strings[i], HASH_TABLE_SIZE_M );
 		// the %16s means print a string (%s) but pad it to 16 spaces
 		printf( "%16s %6i\n", test_strings[i], index );
 	}
-    //eo print
+    // -eo print-
 
-	// calculate table load here
+    // -Print Graph-
+    printf( "\n printing graph \n");
+    for ( int i = 0; i < HASH_TABLE_SIZE_M; i++ ) {
+	// the %16s means print a string (%s) but pad it to 16 spaces
+    	printf( "%c ", hash_table[i][0]);
+	}
+    printf( "\n\n");
+    // -eo graph-
+    //
+
+	// -calculate table load here-
     double table_load = 0;
-    for(int i = 0; i<HASH_TABLE_SIZE_M; i++)
-    {
-        if(hash_table[i][1] != '-')
-        {
-            table_load += 1;
-        }
-    }
-    table_load = table_load/HASH_TABLE_SIZE_M;
-
+    table_load = filled_cells/HASH_TABLE_SIZE_M;
     printf("Table load is %f \n", table_load);
-	// eo table load
+	// -eo table load-
 
 	return 0;
 }
