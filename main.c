@@ -85,7 +85,7 @@ int hash_function(const char *key, int table_size)
     //index = sum of each ascii value of the key put to the power of its position in the key
     for (int j = 0; j < MAX_KEY_LENGTH; j++)
     {
-        index += pow(int(key[j]), j);
+        index += pow(int(key[j]), j%6);
     }
 
     index = index % table_size; //index is index mod table size to make sure it fits in the table
