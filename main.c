@@ -30,7 +30,7 @@ using namespace std;
 //
 // i #define array lengths so i only have to change them in one place
 #define MAX_KEY_LENGTH 16       //Max Length of a Key
-#define HASH_TABLE_SIZE_M 25037 //Size of the hash table
+#define HASH_TABLE_SIZE_M 22943 //Size of the hash table
 #define hash_type 2             // hash type 1 = linear, hash type 2 = double hashing
 //
 
