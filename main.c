@@ -127,6 +127,7 @@ int main()
         "prince adam", "orko", "cringer", "teela", "aleet", "alete", "princess adora", "orko", "a", "aleet"};
 
     char test_strings2[NUM_TEST_KEYS][MAX_KEY_LENGTH];
+    
 
     //
     // -Example: store each key in the table and print the index for each test key-
