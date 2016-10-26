@@ -29,19 +29,19 @@ using namespace std;
 
 //
 // i #define array lengths so i only have to change them in one place
-#define NUM_TEST_KEYS 10 //Number of test keys to be entered
-int NUM_TEST_KEYS2;
 #define MAX_KEY_LENGTH 16       //Max Length of a Key
-#define HASH_TABLE_SIZE_M 15331 //Size of the hash table
+#define HASH_TABLE_SIZE_M 43991 //Size of the hash table
 #define hash_type 2             // hash type 1 = linear, hash type 2 = double hashing
 
 // -- the hash table itself --
 string hash_table[HASH_TABLE_SIZE_M];
-int filled_cells; //counter for number of cells filled, to calculate load
-int total_probes = 0;
-string test_strings2[HASH_TABLE_SIZE_M];
+int filled_cells = 0; //counter for number of cells filled, to calculate load
+int total_probes = 0; //counter for total number of probes
+double table_load = 0; //table load, as a percentage
+string teststrings2[HASH_TABLE_SIZE_M]; //String array to hold all of the test strings. this would not excist in a normal impementionan, it is for testing only
 int collisions_entries[HASH_TABLE_SIZE_M];
 int filled[HASH_TABLE_SIZE_M];
+int NUM_TEST_KEYS2 = 0;
 
 //
 // --Read in test data--
@@ -53,7 +53,6 @@ bool readFile(string Data_file)
     if (In->fail()) //if fail outout error
     {
         cout << "Could not open names file." << endl;
-        //test = {"prince adam", "orko", "cringer", "teela", "aleet", "alete", "princess adora", "orko", "a", "aleet"};
         return false;
     }
     else
@@ -62,13 +61,14 @@ bool readFile(string Data_file)
         int i = 0;
         for (string Line; getline(*In, Line);)
         {
-            test_strings2[i] = Line;
+            teststrings2[i] = Line;
             NUM_TEST_KEYS2++;
             i++;
         }
         return true;
     }
 }
+//--eo Read Test Data--
 
 // -- Hash Function --
 // if it finds the key in the table it should return that index
@@ -82,15 +82,7 @@ int hash_function(const char *key, int table_size)
     //index = sum of each ascii value of the key put to the power of its position in the key
     for (int j = 0; j < MAX_KEY_LENGTH; j++)
     {
-        if(j%2 == 0)
-        {
-            index -= pow(int(key[j]), j);
-        }
-        else
-        {
-            index += pow(int(key[j]), j);
-        }
-        //index += key[j]; //an extremly simple hash which just sums the ascii values of the key
+        index += pow(int(key[j]), j);
     }
 
     index = index % table_size; //index is index mod table size to make sure it fits in the table
@@ -169,13 +161,9 @@ int main()
     // -eo empty-
     //
 
-    //
-    // -Example: array of test strings to use as keys-
-    char test_strings[NUM_TEST_KEYS][MAX_KEY_LENGTH] = {
-        "prince adam", "orko", "cringer", "teela", "aleet", "alete", "princess adora", "orko", "a", "aleet"};
-
     string names = "ASSurnames.txt";
     names = "Given_Names.txt";
+    names = "Names.txt";
     readFile(names);
 
     //eo test data
@@ -183,46 +171,27 @@ int main()
 
     //
     // -Example: store each key in the table and print the index for each test key-
-    printf("\nShort Test\n                     key    table index\n-----------------------------------\n");
-    for (int i = 0; i < NUM_TEST_KEYS; i++)
-    {
-        //pass each of the test strings to the hash function to find index
-        int index = hash_function(test_strings[i], HASH_TABLE_SIZE_M);
-        // the %16s means print a string (%s) but pad it to 16 spaces
-        printf("%16s %6i\n", test_strings[i], index);
-    }
-    // -calculate table load here-
-    double table_load = 0;
-    table_load = double(filled_cells) / HASH_TABLE_SIZE_M;
-    printf("Filled Cells:%d Table Size:%d \n", int(filled_cells), HASH_TABLE_SIZE_M);
-    printf("Table load is %f \n", table_load);
-    printf("Total Probes is %i \n", total_probes);
-    // -eo table load-
-    // -eo print-
-
-    filled_cells = 0;
-    // -Example: store each key in the table and print the index for each test key-
-    printf("\nLong Test\n                     key    table index\n-----------------------------------\n");
+    printf("\n                     key    table index\n-----------------------------------\n");
     for (int i = 0; i < NUM_TEST_KEYS2; i++)
     {
         //pass each of the test strings to the hash function to find index
-        int index = hash_function(&test_strings2[i][0], HASH_TABLE_SIZE_M);
+        int index = hash_function(&teststrings2[i][0], HASH_TABLE_SIZE_M);
         // the %16s means print a string (%s) but pad it to 16 spaces
-        printf("%16s %6i\n", &test_strings2[i][0], index);
+        printf("%16s %6i\n", &teststrings2[i][0], index);
     }
     // -eo print-
 
-    //
-    //test print
-    printf("\nFirst: %s, Second: %s, Third: %s\n", &hash_table[hash_function(test_strings[1], HASH_TABLE_SIZE_M)][0], &hash_table[hash_function(test_strings[2], HASH_TABLE_SIZE_M)][0], &hash_table[hash_function(test_strings[3], HASH_TABLE_SIZE_M)][0]);
-    //eo test print
-    //
+    // //
+    // //test print
+    // printf("\nFirst: %s, Second: %s, Third: %s\n", &hash_table[hash_function(teststrings2[1], HASH_TABLE_SIZE_M)][0], &hash_table[hash_function(teststrings2[2], HASH_TABLE_SIZE_M)][0], &hash_table[hash_function(teststrings2[3], HASH_TABLE_SIZE_M)][0]);
+    // //eo test print
+    // //
 
     // -calculate table load here-
     table_load = 0;
-    table_load = double(filled_cells) / HASH_TABLE_SIZE_M;
-    printf("Filled Cells:%d Table Size:%d \n", int(filled_cells), HASH_TABLE_SIZE_M);
-    printf("Table load is %f \n", table_load);
+    table_load = (double(filled_cells) / HASH_TABLE_SIZE_M)*100;
+    printf("Filled Cells:%d\nTable Size:%d\nTable Load:%f\n", int(filled_cells), HASH_TABLE_SIZE_M, table_load);
+    //printf("Table load is %f \n", table_load);
     printf("Total Probes is %i \n", total_probes);
     // -eo table load-
 
@@ -238,10 +207,9 @@ int main()
         cout << "Results file opened successfully." << endl;
         for (int i = 1; i <= filled_cells; i++)
         {
-            *Out << ", " << collisions_entries[i];
+            *Out << collisions_entries[i] << endl;
         }
     }
-    *Out << endl;
     Out->close();
     Out->open("table.csv");
     if (Out->fail()) //if fail outout error
@@ -251,19 +219,24 @@ int main()
     else
     {
         cout << "table file opened successfully." << endl;
-        for (int i = 1; i <= HASH_TABLE_SIZE_M; i++)
+        // for (int i = 1; i <= HASH_TABLE_SIZE_M; i++)
+        // {
+        //     *Out << ", " << i;
+        // }
+        // *Out << endl;
+        // for (int i = 1; i <= HASH_TABLE_SIZE_M; i++)
+        // {
+        //     *Out << ", " << filled[i];
+        // }
+        // *Out << endl;
+        // for (int i = 1; i <= HASH_TABLE_SIZE_M; i++)
+        // {
+        //     *Out << ", " << &hash_table[i][0];
+        // }
+        
+        for (int i = 1; i < HASH_TABLE_SIZE_M; i++)
         {
-            *Out << ", " << i;
-        }
-        *Out << endl;
-        for (int i = 1; i <= HASH_TABLE_SIZE_M; i++)
-        {
-            *Out << ", " << filled[i];
-        }
-        *Out << endl;
-        for (int i = 1; i <= HASH_TABLE_SIZE_M; i++)
-        {
-            *Out << ", " << &hash_table[i][0];
+            *Out << i << ", " << filled[i] << ", " << &hash_table[i][0] << endl;
         }
 
     }
