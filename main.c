@@ -28,10 +28,11 @@
 using namespace std;
 
 //
-// i #define array lengths so i only have to change them in one place
+// -- Definitions -- 
 #define MAX_KEY_LENGTH 16       //Max Length of a Key
 #define HASH_TABLE_SIZE_M 22943 //Size of the hash table
 #define hash_type 2             // hash type 1 = linear, hash type 2 = double hashing
+// -- eo Definitions -- 
 //
 
 //
@@ -41,12 +42,12 @@ int filled_cells = 0;                   //counter for number of cells filled, to
 int total_probes = 0;                   //counter for total number of probes
 double table_load = 0;                  //table load, as a percentage
 string teststrings[HASH_TABLE_SIZE_M]; //String array to hold all of the test strings. this would not excist in a normal impementionan, it is for testing only
-int collisions_entries[HASH_TABLE_SIZE_M];
-int filled[HASH_TABLE_SIZE_M];
-int NUM_TEST_KEYS = 0;
-int highest_probes = 0;
-double highest_duration = 0;
-//
+int collisions_entries[HASH_TABLE_SIZE_M]; //table storing number of collisions for each entry
+int filled[HASH_TABLE_SIZE_M];  //tabke storing which of the hash tables cells are full
+int NUM_TEST_KEYS = 0;  //number of test keys, set by the readFile function
+int highest_probes = 0; // highest number of probes for data
+double highest_duration = 0;    //highest duration for data probes
+// -- eo Variables -- 
 
 //
 // --Read in test data--
@@ -215,7 +216,11 @@ int main()
     // -calculate table load here-
     table_load = 0;
     table_load = (double(filled_cells) / HASH_TABLE_SIZE_M) * 100;
-    printf("Filled Cells:%d\nTable Size:%d\nTable Load:%f\nTotal Probes:%i\n_cs_precedes", int(filled_cells), HASH_TABLE_SIZE_M, table_load, total_probes);
+    duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
+    printf("\nFilled Cells:%d\nTable Size:%d\nTable Load:%f\nTotal Probes:%i\n", int(filled_cells), HASH_TABLE_SIZE_M, table_load, total_probes);
+    printf("Total Duration: %f\n", duration);
+    printf("Highest Probe: %d\n", highest_probes);
+    printf("Highest Duration: %f\n\n", highest_duration);
     // -eo table load-
     //
 
@@ -229,7 +234,7 @@ int main()
     }
     else
     {
-        cout << "Results file opened successfully." << endl;
+        //printf("Results file opened successfully.\n");
         for (int i = 1; i <= filled_cells; i++)
         {
             *Out << collisions_entries[i] << endl;
@@ -244,34 +249,14 @@ int main()
     }
     else
     {
-        cout << "table file opened successfully." << endl;
-
+        //printf("Table file opened successfully.\n");
         for (int i = 1; i < HASH_TABLE_SIZE_M; i++)
         {
             *Out << i << ", " << filled[i] << ", " << &hash_table[i][0] << endl;
         }
     }
-
-    duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
-
-    printf("\nTotal Duration: %f\n", duration);
-    printf("\nHighest Probe: %d\n", highest_probes);
-    printf("\nHighest Duration: %f\n", highest_duration);
     //--eo Results Output--
     //
-
-    //
-    //--Checking time/probe--
-
-    string test_name = "fpsched";
-    int test_index;
-
-    start = std::clock();
-
-    test_index = hash_function(&test_name[0], HASH_TABLE_SIZE_M, &hash_table[0]);
-
-    duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
-    printf("\nTotal Duration: %f\n", duration);
 
     return 0;
 }
