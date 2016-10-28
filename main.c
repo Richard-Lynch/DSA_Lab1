@@ -37,15 +37,6 @@ using namespace std;
 //
 
 //
-// -- Varaibles --
-// string hash_table[HASH_TABLE_SIZE_M];   //the actual hash table
-// string teststrings[HASH_TABLE_SIZE_M]; //String array to hold all of the test strings. this would not excist in a normal impementionan, it is for testing only
-// int filled_cells = 0;                   //counter for number of cells filled, to calculate load
-double table_load = 0;                  //table load, as a percentage
-// -- eo Variables -- 
-//
-
-//
 // -- Hash Function --
 // if it finds the key in the table it should return that index
 // otherwise return the appropriate empty index(and add to the table) or -1 if table is full
@@ -152,7 +143,7 @@ int main()
 
     //
     // -calculate table load here-
-    table_load = 0;
+    double table_load = 0; 
     table_load = (double(filled_cells) / HASH_TABLE_SIZE_M) * 100;
     printf("\nFilled Cells:%d\nTable Size:%d\nTable Load:%f\n\n", int(filled_cells), HASH_TABLE_SIZE_M, table_load);
     // -eo table load-
