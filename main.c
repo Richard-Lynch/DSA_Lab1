@@ -40,15 +40,17 @@ string hash_table[HASH_TABLE_SIZE_M];
 int filled_cells = 0;                   //counter for number of cells filled, to calculate load
 int total_probes = 0;                   //counter for total number of probes
 double table_load = 0;                  //table load, as a percentage
-string teststrings2[HASH_TABLE_SIZE_M]; //String array to hold all of the test strings. this would not excist in a normal impementionan, it is for testing only
+string teststrings[HASH_TABLE_SIZE_M]; //String array to hold all of the test strings. this would not excist in a normal impementionan, it is for testing only
 int collisions_entries[HASH_TABLE_SIZE_M];
 int filled[HASH_TABLE_SIZE_M];
-int NUM_TEST_KEYS2 = 0;
+int NUM_TEST_KEYS = 0;
+int highest_probes = 0;
+double highest_duration = 0;
 //
 
 //
 // --Read in test data--
-bool readFile(string Data_file)
+bool readFile(string Data_file, string teststrings2[], int* NUM_TEST_KEYS2)
 {
     ifstream *In = new ifstream;
     In->open(Data_file);
@@ -65,7 +67,7 @@ bool readFile(string Data_file)
         for (string Line; getline(*In, Line);)
         {
             teststrings2[i] = Line;
-            NUM_TEST_KEYS2++;
+            (*NUM_TEST_KEYS2)++;
             i++;
         }
         return true;
@@ -76,8 +78,12 @@ bool readFile(string Data_file)
 // -- Hash Function --
 // if it finds the key in the table it should return that index
 // otherwise return the appropriate empty index(and add to the table) or -1 if table is full
-int hash_function(const char *key, int table_size)
+int hash_function(const char *key, int table_size, string hash_table2[])
 {
+    std::clock_t start;
+    double duration;
+    start = std::clock();
+
     long long index = 0; //the index which will be returned
     int probes = 0;      //the number of probes required to find
 
@@ -89,7 +95,7 @@ int hash_function(const char *key, int table_size)
     }
 
     index = index % table_size; //index is index mod table size to make sure it fits in the table
-    index = llabs(index);
+    index = llabs(index);   //gets absolute value of mod
     //-eo simple-
     //
 
@@ -99,12 +105,12 @@ int hash_function(const char *key, int table_size)
     while (found == 0)
     {
         //check if index being checked is empty
-        if (hash_table[index][0] == '-')
+        if (hash_table2[index][0] == '-')
         {
             found = 1;      //if the index being checked is empty set found flag to 1
             filled_cells++; //add one to the number of filled cells(this is the first time we've added this key)
         }
-        else if (strcasecmp(&hash_table[index][0], key) == 0)
+        else if (strcasecmp(&hash_table2[index][0], key) == 0)
         {
             found = 2; //if the index being checked containts the key, set found flag to 1
             //we have found the key in the table, we dont need to add 1 to filled
@@ -140,11 +146,23 @@ int hash_function(const char *key, int table_size)
     total_probes += probes;
     collisions_entries[filled_cells] = probes;
 
+    if(probes > highest_probes)
+    {
+        highest_probes = probes;
+    }
+
     //-if the table wasnt full(we found an available index) copy the key to the table-
     if (index != -1)
     {
-        strcpy(&hash_table[index][0], key);
+        strcpy(&hash_table2[index][0], key);
         filled[index] = 1;
+    }
+
+    duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
+
+    if(duration > highest_duration)
+    {
+        highest_duration = duration;
     }
 
     return index;
@@ -176,19 +194,19 @@ int main()
     names = "Given_Names.txt";
     names = "Names.txt";
     names = "Names/Names.txt";
-    readFile(names);
+    readFile(names, &teststrings[0], &NUM_TEST_KEYS);
     //-eo test data-
     //
 
     //
     // -Store each key in the table and print the index for each test key-
     printf("\n                   key    table index\n-----------------------------------\n");
-    for (int i = 0; i < NUM_TEST_KEYS2; i++)
+    for (int i = 0; i < NUM_TEST_KEYS; i++)
     {
         //pass each of the test strings to the hash function to find index
-        int index = hash_function(&teststrings2[i][0], HASH_TABLE_SIZE_M);
+        int index = hash_function(&teststrings[i][0], HASH_TABLE_SIZE_M, &hash_table[0]);
         // the %16s means print a string (%s) but pad it to 16 spaces
-        printf("%16s %6i\n", &teststrings2[i][0], index);
+        printf("%20s %6i\n", &teststrings[i][0], index);
     }
     // -eo print-
     //
@@ -202,6 +220,7 @@ int main()
     //
 
     //
+    //--Results Output--
     ofstream *Out = new ofstream;
     Out->open("collisions.csv");
     if (Out->fail()) //if fail outout error
@@ -235,6 +254,23 @@ int main()
 
     duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 
+    printf("\nTotal Duration: %f\n", duration);
+    printf("\nHighest Probe: %d\n", highest_probes);
+    printf("\nHighest Duration: %f\n", highest_duration);
+    //--eo Results Output--
+    //
+
+    //
+    //--Checking time/probe--
+
+    string test_name = "fpsched";
+    int test_index;
+
+    start = std::clock();
+
+    test_index = hash_function(&test_name[0], HASH_TABLE_SIZE_M, &hash_table[0]);
+
+    duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
     printf("\nTotal Duration: %f\n", duration);
 
     return 0;
