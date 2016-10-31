@@ -36,9 +36,9 @@ int main()
     const int size = 17;
     HashTable test_hash(16, size, 1);
 
-    Read_Write TestStrings;
+    Read_Write TestStrings();
     string names = "Names/Names.txt";
-    string teststrings2[test_hash.size];
+    string teststrings2[test_hash.table_size];
     int Num_Keys = 0;
     Files.readFile(names, &teststrings2[0], &Num_Keys, teststrings2.size());
 

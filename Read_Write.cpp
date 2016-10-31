@@ -3,7 +3,7 @@
 //readFile(names, &teststrings[0], &NUM_TEST_KEYS);
 //
 // --Read in test data--
-bool Read_Write::readFile(string Input, string Output[], int* NUM_TEST_KEYS2, int Outout_Size)
+bool Read_Write::readFile(string Input, string Output[], int* NUM_TEST_KEYS2, int Output_Size)
 {
     ifstream *In = new ifstream;
     In->open(Input);
