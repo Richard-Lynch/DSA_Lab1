@@ -12,7 +12,7 @@ class Read_Write{
 
     bool readFile(string Input, string Output[], int* Num_Entries, int Output_Size);
     //bool readToStored(string Input);
-    bool writeFile(string Output, int Input[], int Num_Entries);
+    bool writeFile(string Output, int Input1[], int Input2[], int Num_Entries);
     Read_Write();
     //bool writeFromStored(String Output)
 };

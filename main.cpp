@@ -33,41 +33,52 @@ using namespace std;
 
 int main()
 {
-    const int size = 17;
-    HashTable test_hash(16, size, 1);
-
-    Read_Write Test;
-    string names = "Names/Names.txt";
-    string teststrings2[size];
+    const int max_size = 22943;
     int Num_Keys = 0;
-    Test.readFile(names, &teststrings2[0], &Num_Keys, size);
+    string names = "Names/Names.txt";
+    string teststrings2[max_size];
+    
+    Read_Write Test;
+    Test.readFile(names, &teststrings2[0], &Num_Keys, max_size);
+
+    HashTable* test_hash;
+    int Array_Size[3] = {17, 5101, 22943};
+    int divisors[3] = {2, 5, 9};
+    string Files[] = {
+        "Small_20.csv", "Small_50.csv", "Small_90.csv", "Med_20.csv", "Med_50.csv", "Med_90.csv", "Lrg_20.csv",
+         "Lrg_50.csv", "Lrg_90.csv"};
 
 
-    string teststrings[size] = {
-        "Richard", "Stephen", "Sarah", "Alexandra", "Alex", "Richie", "Ste", "Katie", "Katy", "Richie"};
-
-    //
-    // -Store each key in the table and print the index for each test key-
-    printf("\n                   key    table index\n-----------------------------------\n");
-    for (int i = 0; i < Num_Keys; i++)
+    for(int i = 0; i < 3; i++)
     {
-        //pass each of the test strings to the hash function to find index
-        int index = test_hash.hash_function(&teststrings2[i][0]);
-        // the %16s means print a string (%s) but pad it to 16 spaces
-        printf("%16s %6i\n", &teststrings2[i][0], index);
+        test_hash = new HashTable(16, Array_Size[i], 1);
+        for(int j = 0; j < 3; j++)
+        {
+            int fill_level = int((Array_Size[i]/10)*divisors[j]);
+            //
+            // -Store each key in the table and print the index for each test key-
+            printf("\n                   key    table index\n-----------------------------------\n");
+            for (int k = 0; k < fill_level; k++)
+            {
+                //pass each of the test strings to the hash function to find index
+                int index = test_hash->hash_function(&teststrings2[k][0]);
+                // the %16s means print a string (%s) but pad it to 16 spaces
+                printf("%16s %6i\n", &teststrings2[k][0], index);
+            }
+            // -eo print-
+            //
+
+            //
+            // -calculate table load here-
+            printf("\nFilled Cells:%d\nTable Size:%d\nTable Load:%f\n\n", int(test_hash->filled_cells), int(test_hash->table_size), double(test_hash->table_load()));
+            string output = "Test_Results/";
+            output.append(Files[(3*i)+j]);
+            Test.writeFile(output, test_hash->Collisions_Index,test_hash->Filled, test_hash->table_size);
+            // -eo table load-
+            //
+        }
     }
-    // -eo print-
-    //
 
-    //
-    // -calculate table load here-
-    printf("\nFilled Cells:%d\nTable Size:%d\nTable Load:%f\n\n", int(test_hash.filled_cells), int(test_hash.table_size), double(test_hash.table_load()));
-    string output = "collisions.csv";
-    Test.writeFile(output, test_hash.Collisions_Index, test_hash.table_size);
-    Test.writeFile(output, test_hash.Filled, test_hash.table_size);
-
-    // -eo table load-
-    //
 
     return 0;
 }

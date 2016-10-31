@@ -23,6 +23,8 @@ HashTable::HashTable(int MAX_KEY_LENGTH, int HASH_TABLE_SIZE_M, int DOUBLE_HASHI
 HashTable::~HashTable()
 {
     delete[] hash_table;
+    delete[] Collisions_Index;
+    delete[] Filled;
 }
 
 double HashTable::table_load()
