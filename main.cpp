@@ -26,6 +26,7 @@
 #include <iostream>
 #include <fstream>
 #include "HashTable.cpp"
+#include "Read_Write.cpp"
 using namespace std;
 
 #define NUM_TEST_KEYS 10
@@ -34,6 +35,13 @@ int main()
 {
     const int size = 17;
     HashTable test_hash(16, size, 1);
+
+    Read_Write TestStrings;
+    string names = "Names/Names.txt";
+    string teststrings2[test_hash.size];
+    int Num_Keys = 0;
+    Files.readFile(names, &teststrings2[0], &Num_Keys, teststrings2.size());
+
 
     string teststrings[size] = {
         "Richard", "Stephen", "Sarah", "Alexandra", "Alex", "Richie", "Ste", "Katie", "Katy", "Richie"};

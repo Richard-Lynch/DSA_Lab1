@@ -7,15 +7,13 @@ using namespace std;
 
 class Read_Write{
     public:
-    string max_key_length;    //Max Length of a Key
-    int table_size;    //Size of the hash table
-    int double_hashing;
-    int filled_cells;
-    int collisions;
-    string *hash_table;
+    string* Stored;
+    int Num_Stored;
 
-    int hash_function(const char *key);
-    double table_load();
+    bool readFile(string Input, string Output[], int* NUM_TEST_KEYS2, int Output_Size);
+    //bool readToStored(string Input);
+    bool writeFile(string Output, string Input[], int Num_Entries);
+    //bool writeFromStored(String Output)
     Read_Write(int MAX_KEY_LENGTH, int HASH_TABLE_SIZE_M, int DOUBLE_HASHING);
     ~Read_Write();
 };
