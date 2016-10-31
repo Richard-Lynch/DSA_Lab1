@@ -26,9 +26,6 @@ double HashTable::table_load()
     return load;
 }
 
-
-
-
 int HashTable::hash_function(const char *key)
 {
     long long index = 0; //the index which will be returned
