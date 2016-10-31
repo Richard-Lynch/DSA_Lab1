@@ -33,7 +33,7 @@ using namespace std;
 int main()
 {
     const int size = 17;
-    HashTable test_hash(20, size, 1);
+    HashTable test_hash(16, size, 1);
 
     string teststrings[size] = {
         "Richard", "Stephen", "Sarah", "Alexandra", "Alex", "Richie", "Ste", "Katie", "Katy", "Richie"};
