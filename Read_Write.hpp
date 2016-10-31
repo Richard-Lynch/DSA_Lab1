@@ -5,9 +5,9 @@
 #include <fstream>
 using namespace std;
 
-class HashTable{
+class Read_Write{
     public:
-    int max_key_length;    //Max Length of a Key
+    string max_key_length;    //Max Length of a Key
     int table_size;    //Size of the hash table
     int double_hashing;
     int filled_cells;
@@ -16,6 +16,6 @@ class HashTable{
 
     int hash_function(const char *key);
     double table_load();
-    HashTable(int MAX_KEY_LENGTH, int HASH_TABLE_SIZE_M, int DOUBLE_HASHING);
-    ~HashTable();
+    Read_Write(int MAX_KEY_LENGTH, int HASH_TABLE_SIZE_M, int DOUBLE_HASHING);
+    ~Read_Write();
 };

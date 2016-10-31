@@ -12,6 +12,7 @@ HashTable::HashTable(int MAX_KEY_LENGTH, int HASH_TABLE_SIZE_M, int DOUBLE_HASHI
         hash_table[i] = '-';
     }
     filled_cells = 0;
+    collisions = 0;
     //eo empty
 }
 
