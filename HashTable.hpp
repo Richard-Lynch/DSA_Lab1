@@ -12,7 +12,9 @@ class HashTable{
     int double_hashing;
     int filled_cells;
     int collisions;
-    string *hash_table;
+    int* Collisions_Index;
+    int* Filled;
+    string* hash_table;
 
     int hash_function(const char *key);
     double table_load();

@@ -1,9 +1,15 @@
 #include "Read_Write.hpp"
 
+Read_Write::Read_Write()
+{
+    Stored = NULL;
+    Num_Stored = 0;
+}
+
 //readFile(names, &teststrings[0], &NUM_TEST_KEYS);
 //
 // --Read in test data--
-bool Read_Write::readFile(string Input, string Output[], int* NUM_TEST_KEYS2, int Output_Size)
+bool Read_Write::readFile(string Input, string Output[], int* Num_Entries, int Output_Size)
 {
     ifstream *In = new ifstream;
     In->open(Input);
@@ -18,23 +24,25 @@ bool Read_Write::readFile(string Input, string Output[], int* NUM_TEST_KEYS2, in
     {
         cout << "Input file opened successfully." << endl;
         int i = 0;
-        for (string Line; getline(*In, Line); (i < Output_Size))
+        string Line;
+        getline(*In, Line);
+        for (Line; (i < Output_Size); getline(*In, Line))
         {
             Output[i] = Line;
             //(*NUM_TEST_KEYS2)++;
             i++;
         }
-        *NUM_TEST_KEYS = i;
+        *Num_Entries = i;
         In->close();
         return true;
     }
 }
 //--eo Read Test Data--//
 
-bool Read_Write::writeFile(string Output, string Input[], int Num_Entries)
+bool Read_Write::writeFile(string Output, int Input[], int Num_Entries)
 {
     ofstream *Out = new ofstream;
-    Out->open(Output);
+    Out->open(Output, std::ofstream::app);
     if (Out->fail()) //if fail outout error
     {
         cout << "Could not open Output file." << endl;
@@ -44,10 +52,10 @@ bool Read_Write::writeFile(string Output, string Input[], int Num_Entries)
     else
     {
         cout << "Output file opened successfully." << endl;
-        *Out << Input[0] << endl;
-        for (int i = 1; i < Num_Entries; i++)
+        *Out << Input[0];
+        for (int i = 1; i <= Num_Entries; i++)
         {
-            *Out << "," << Input[i];
+            *Out << ", " << Input[i];
         }
         *Out << endl;
         Out->close();

@@ -10,10 +10,9 @@ class Read_Write{
     string* Stored;
     int Num_Stored;
 
-    bool readFile(string Input, string Output[], int* NUM_TEST_KEYS2, int Output_Size);
+    bool readFile(string Input, string Output[], int* Num_Entries, int Output_Size);
     //bool readToStored(string Input);
-    bool writeFile(string Output, string Input[], int Num_Entries);
+    bool writeFile(string Output, int Input[], int Num_Entries);
+    Read_Write();
     //bool writeFromStored(String Output)
-    Read_Write(int MAX_KEY_LENGTH, int HASH_TABLE_SIZE_M, int DOUBLE_HASHING);
-    ~Read_Write();
 };

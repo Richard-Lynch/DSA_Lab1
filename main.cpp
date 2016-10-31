@@ -36,11 +36,11 @@ int main()
     const int size = 17;
     HashTable test_hash(16, size, 1);
 
-    Read_Write TestStrings();
+    Read_Write Test;
     string names = "Names/Names.txt";
-    string teststrings2[test_hash.table_size];
+    string teststrings2[size];
     int Num_Keys = 0;
-    Files.readFile(names, &teststrings2[0], &Num_Keys, teststrings2.size());
+    Test.readFile(names, &teststrings2[0], &Num_Keys, size);
 
 
     string teststrings[size] = {
@@ -49,12 +49,12 @@ int main()
     //
     // -Store each key in the table and print the index for each test key-
     printf("\n                   key    table index\n-----------------------------------\n");
-    for (int i = 0; i < NUM_TEST_KEYS; i++)
+    for (int i = 0; i < Num_Keys; i++)
     {
         //pass each of the test strings to the hash function to find index
-        int index = test_hash.hash_function(&teststrings[i][0]);
+        int index = test_hash.hash_function(&teststrings2[i][0]);
         // the %16s means print a string (%s) but pad it to 16 spaces
-        printf("%16s %6i\n", &teststrings[i][0], index);
+        printf("%16s %6i\n", &teststrings2[i][0], index);
     }
     // -eo print-
     //
@@ -62,6 +62,10 @@ int main()
     //
     // -calculate table load here-
     printf("\nFilled Cells:%d\nTable Size:%d\nTable Load:%f\n\n", int(test_hash.filled_cells), int(test_hash.table_size), double(test_hash.table_load()));
+    string output = "collisions.csv";
+    Test.writeFile(output, test_hash.Collisions_Index, test_hash.table_size);
+    Test.writeFile(output, test_hash.Filled, test_hash.table_size);
+
     // -eo table load-
     //
 

@@ -6,10 +6,14 @@ HashTable::HashTable(int MAX_KEY_LENGTH, int HASH_TABLE_SIZE_M, int DOUBLE_HASHI
     table_size = HASH_TABLE_SIZE_M;
     double_hashing = DOUBLE_HASHING;//set the hash type which will determine if the linear probing or double hashing is used
     hash_table = new string[table_size];//allocate memory for hash table
+    Collisions_Index = new int[table_size];
+    Filled = new int[table_size];
     //empty table
     for (int i = 0; i < table_size; i++)
     {
         hash_table[i] = '-';
+        Collisions_Index[i] = 0;
+        Filled[i] = 0;
     }
     filled_cells = 0;
     collisions = 0;
@@ -93,6 +97,9 @@ int HashTable::hash_function(const char *key)
     if (index != -1)
     {
         strcpy(&hash_table[index][0], key);
+        collisions += probes;
+        Collisions_Index[index] = probes;
+        Filled[index] = 1;
     }
 
     return index;
