@@ -1,23 +1,8 @@
 //
-// hash table starter implementation
-// First v. 20 Oct 2016. Dr Anton Gerdelan <gerdela@scss.tcd.ie>
-// Written in C99
-//
-// considerations:
-// * remember to put your own name and date on your file(s)
-// * start with the easiest and simplest approach, and build up from that.
-// * i just have an array for the table and a function, but you
-//   might prefer to put these in a c++ class - just as good.
-// * i just have one hash function for both searching and storing
-//   operations, and i would do the actual storing in main().
-//   you might find it tidier to make separate functions for each task.
-// * my hash table just stores fixed-length strings, but you might prefer to
-//   store structs, or even pointers to dynamically allocated memory
-// * when you upgrade to a double hashing function you are vulnerable
-//   to some new errors - incomplete coverage and being stuck in an
-//   infinite loop. some light reading may be required!
-// * if you get stuck in an infinite loop CTRL+C is the code to force quit
-//   your program if it's in a terminal
+//Richard Lynch
+// 12302202
+// Data Structures and Algorithms
+// Hash Tables Assignment
 //
 
 #include <stdio.h>  // printf() etc.

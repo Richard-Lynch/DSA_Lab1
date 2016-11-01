@@ -1,3 +1,10 @@
+//
+//Richard Lynch
+// 12302202
+// Data Structures and Algorithms
+// Hash Tables Assignment
+//
+
 #include "Read_Write.hpp"
 
 Read_Write::Read_Write()

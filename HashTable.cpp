@@ -1,3 +1,10 @@
+//
+//Richard Lynch
+// 12302202
+// Data Structures and Algorithms
+// Hash Tables Assignment
+//
+
 #include "HashTable.hpp"
 
 HashTable::HashTable(int MAX_KEY_LENGTH, int HASH_TABLE_SIZE_M, int DOUBLE_HASHING)
