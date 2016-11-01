@@ -1,3 +1,10 @@
+//
+//Richard Lynch
+// 12302202
+// Data Structures and Algorithms
+// Hash Tables Assignment
+//
+
 #include <stdio.h>  // printf() etc.
 #include <string.h> // strcpy(), strlen() etc.
 #include <math.h>
