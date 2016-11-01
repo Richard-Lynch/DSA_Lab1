@@ -73,7 +73,10 @@ int main()
             printf("\nFilled Cells:%d\nTable Size:%d\nTable Load:%f\n\n", int(test_hash->filled_cells), int(test_hash->table_size), double(test_hash->table_load()));
             string output = "Test_Results/";
             output.append(Files[(3*i)+j]);
-            Test.writeFile(output, test_hash->Collisions_Index,test_hash->Filled, test_hash->table_size);
+            Test.writeFile2(output, test_hash->Collisions_Index,test_hash->Filled, test_hash->table_size);
+            if(j == 2){
+                Test.writeFile("Collisions_Over_Time.csv", test_hash->Collisions_Index, test_hash->filled_cells);
+            }
             // -eo table load-
             //
         }

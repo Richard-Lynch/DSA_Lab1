@@ -8,12 +8,14 @@ HashTable::HashTable(int MAX_KEY_LENGTH, int HASH_TABLE_SIZE_M, int DOUBLE_HASHI
     hash_table = new string[table_size];//allocate memory for hash table
     Collisions_Index = new int[table_size];
     Filled = new int[table_size];
+    Collisions_Filled = new int[table_size];
     //empty table
     for (int i = 0; i < table_size; i++)
     {
         hash_table[i] = '-';
         Collisions_Index[i] = 0;
         Filled[i] = 0;
+        Collisions_Index[i] = 0;
     }
     filled_cells = 0;
     collisions = 0;
@@ -102,6 +104,7 @@ int HashTable::hash_function(const char *key)
         collisions += probes;
         Collisions_Index[index] = probes;
         Filled[index] = 1;
+        Collisions_Filled[filled_cells] = probes;
     }
 
     return index;

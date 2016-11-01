@@ -14,6 +14,7 @@ class HashTable{
     int collisions;
     int* Collisions_Index;
     int* Filled;
+    int* Collisions_Filled;
     string* hash_table;
 
     int hash_function(const char *key);

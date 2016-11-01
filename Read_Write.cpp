@@ -39,7 +39,30 @@ bool Read_Write::readFile(string Input, string Output[], int* Num_Entries, int O
 }
 //--eo Read Test Data--//
 
-bool Read_Write::writeFile(string Output, int Input1[], int Input2[], int Num_Entries)
+bool Read_Write::writeFile(string Output, int Input1[], int Num_Entries)
+{
+    ofstream *Out = new ofstream;
+    Out->open(Output);
+    if (Out->fail()) //if fail outout error
+    {
+        cout << "Could not open Output file." << endl;
+        Out->close();
+        return false;
+    }
+    else
+    {
+        cout << "Output file opened successfully." << endl;
+        for (int i = 0; i < Num_Entries; i++)
+        {
+            *Out << i << ", " << Input1[i] << endl;
+        }
+        *Out << endl;
+        Out->close();
+        return true;
+    }
+}
+
+bool Read_Write::writeFile2(string Output, int Input1[], int Input2[], int Num_Entries)
 {
     ofstream *Out = new ofstream;
     Out->open(Output, std::ofstream::app);
